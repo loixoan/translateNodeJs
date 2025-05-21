@@ -8,7 +8,7 @@ app.use(express.json());
 // const proxyUrl = 'http://brd-customer-hl_ba3dd393-zone-nam_proxy_taob:pjxzc52s5fg1@zproxy.lum-superproxy.io:22225';
 // const agent = new HttpsProxyAgent(proxyUrl);
 
-app.post('/api/translate111', async (req, res) => {
+app.post('/api/translate', async (req, res) => {
     const { txt, lang } = req.body;
 
     if (!txt || !lang) {
