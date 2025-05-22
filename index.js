@@ -7,8 +7,7 @@ const app = express();
 app.use(express.json());
 dotenv.config();
 
-const proxyUrl = 'http://fud07jenfdxcrn5:u7zy9sz52r1bb4a@rp.scrapegw.com:6060';
-// const proxyUrl = "https://51.159.194.213"
+const proxyUrl = '';
 const agent = new HttpsProxyAgent(proxyUrl);
 
 app.post('/api/translate', async (req, res) => {
