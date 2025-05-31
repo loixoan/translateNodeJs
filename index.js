@@ -7,7 +7,7 @@ const app = express();
 app.use(express.json());
 dotenv.config();
 
-const proxyUrl = '';
+const proxyUrl = 'http://fud07jenfdxcrn5:u7zy9sz52r1bb4a@rp.scrapegw.com:6060';
 const agent = new HttpsProxyAgent(proxyUrl);
 
 app.post('/api/translate', async (req, res) => {
@@ -44,8 +44,9 @@ app.post('/api/translate', async (req, res) => {
     }
 });
 
-app.get('/api/googleGemini/CallApi', async (req, res) => {
+app.post('/api/googleGemini/CallApi', async (req, res) => {
     const ai = new GoogleGenAI({apiKey: process.env.GEMINI_API_KEY});
+    const {txt} = req.body;
     let text = "";
     const config = {
         thinkingConfig: {
@@ -59,12 +60,7 @@ app.get('/api/googleGemini/CallApi', async (req, res) => {
             role: 'user',
             parts: [
                 {
-                    text: `Hãy so sánh ChatGPT Plus và Claude AI theo các tiêu chí sau: Kiến trúc, Mô hình đào tạo, Trọng tâm phát triển, Khả năng hiểu ngữ cảnh, Phong cách trả lời, Ứng dụng nổi bật, Nhà phát triển, Tính sẵn có.
-                            Trả về kết quả ở định dạng JSON như sau: {
-                              "tieu_chi": "",
-                              "ChatGPT Plus": "",
-                              "Claude AI": ""
-                            }`,
+                    text: txt,
                 },
             ],
         }
@@ -86,7 +82,7 @@ app.get('/api/googleGemini/CallApi', async (req, res) => {
     return res.status(200).json({
         status: text ? 'success' : 'fail',
         error: !text,
-        data: text ? {text: JSON.parse(text)} : null
+        data: text ? JSON.parse(text) : null
     });
 
 
