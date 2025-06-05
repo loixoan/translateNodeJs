@@ -3,11 +3,12 @@ import {translate} from '@vitalets/google-translate-api';
 import {HttpsProxyAgent} from 'https-proxy-agent';
 import {GoogleGenAI} from "@google/genai";
 import dotenv from 'dotenv';
+import {modelGemini} from "./model.js";
 const app = express();
 app.use(express.json());
 dotenv.config();
 
-const proxyUrl = 'http://fud07jenfdxcrn5:u7zy9sz52r1bb4a@rp.scrapegw.com:6060';
+const proxyUrl = '';
 const agent = new HttpsProxyAgent(proxyUrl);
 
 app.post('/api/translate', async (req, res) => {
@@ -54,7 +55,7 @@ app.post('/api/googleGemini/CallApi', async (req, res) => {
         },
         responseMimeType: 'application/json',
     };
-    const model = 'gemini-2.5-flash-preview-04-17';
+    const model = modelGemini.flash;
     const contents = [
         {
             role: 'user',
@@ -73,12 +74,13 @@ app.post('/api/googleGemini/CallApi', async (req, res) => {
             contents,
         });
         for await (const chunk of response) {
+            console.log(chunk.text)
             text += chunk.text;
         }
     }
 
     await main();
-
+    console.log("text: "+ text)
     return res.status(200).json({
         status: text ? 'success' : 'fail',
         error: !text,
